@@ -24,7 +24,7 @@ class FileService {
     }
     const clusterInfo = this.clusters[clusterId];
     const movies = clusterInfo.films;
-    const filteredMovies: Array<Object> = this._filterTopMovies(movies, 10); //return top 10 movies
+    const filteredMovies: Array<Object> = this._filterTopMovies(movies, 30); //return top 30 movies
     return filteredMovies;
   }
 }

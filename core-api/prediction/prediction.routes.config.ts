@@ -12,7 +12,7 @@ export class PredictionRoutes extends CommonRoutesConfig {
       .route(`/prediction`)
       .post(
         predictionMiddleware.validateRequest,
-        predictionController.getClusterId
+        predictionController.getPredictions
       );
     return this.app;
   }

@@ -1,0 +1,4 @@
+*.env
+/core-api/node_modules
+/recommender-model/datasets
+/recommender-model/recommender-api/node_modules

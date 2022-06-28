@@ -1,18 +1,23 @@
 import express from "express";
-import fileService from "../../file/service/file.service";
-import debug from "debug";
+
 import predictionService from "../services/prediction.service";
+import predictionUtils from "../utils/prediction.utils";
+import TMDBService from "../../TMDB/Service/TMDB.service";
+import debug from "debug";
 const log: debug.IDebugger = debug("app:prediction-controller");
 class PredictionController {
-  async getClusterId(req: express.Request, res: express.Response) {
-    const weights: Array<number> = req.body.weights;
+  async getPredictions(req: express.Request, res: express.Response) {
+    const weights: Array<number> = req.body.weights; // array of length 8
+    const convertedWeights: Array<number> =
+      predictionUtils.convertToFullWeights(weights);
 
-    const clusterId: number = await predictionService.getClusterId(weights);
-    log(`clusterId: ${clusterId}`);
-    const movies: Array<Object> = await fileService.getMovies(
-      clusterId.toString()
+    const movieIds: Array<string> = await predictionService.getPredictions(
+      convertedWeights
     );
-    res.status(200).send(movies);
+    log(`movieIds ${movieIds}`);
+    const movieInfos: Array<Object> = await TMDBService.getMovieInfos(movieIds);
+
+    res.status(200).send(movieInfos);
   }
 }
 export default new PredictionController();

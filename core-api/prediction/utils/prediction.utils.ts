@@ -1,38 +1,16 @@
-import express from "express";
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-class StocksUtils {
-  sanitizeDateQuery(req: express.Request) {
-    let queryParam = req.query && req.query.date ? req.query.date : null;
-    if (queryParam) {
-      queryParam = queryParam.toString(); // if queryParam exists, convert it to string
-    } else {
-      return null;
-    }
-    const [day, month, year] = queryParam.split("-");
-    const dayNum = parseInt(day);
-    const yearNum = parseInt(year);
-    if (
-      dayNum > 0 &&
-      dayNum < 31 &&
-      yearNum > 1900 &&
-      yearNum < 2100 &&
-      months.includes(month)
-    ) {
-      return queryParam;
-    } else return null;
+import { GENRES, GENRE_SHORT_LIST } from "../constants/prediction.constants";
+class PredictionUtils {
+  convertToFullWeights(weights: Array<number>) {
+    const shortList = GENRE_SHORT_LIST;
+    const newWeights: Array<number> = this._placeToNewIndex(weights);
+    return newWeights;
+  }
+  _placeToNewIndex(weights: Array<number>) {
+    const newWeights = new Array(28).fill(0);
+    weights.forEach((weight, index) => {
+      newWeights[GENRE_SHORT_LIST[index]] = weight;
+    });
+    return newWeights;
   }
 }
-export default new StocksUtils();
+export default new PredictionUtils();
