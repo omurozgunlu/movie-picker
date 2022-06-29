@@ -1,6 +1,7 @@
 import HttpClient from "../../common/httpClient/common.httpClient";
 import "dotenv/config";
 import debug from "debug";
+import axios from "axios";
 const log: debug.IDebugger = debug("app:TMDB-client");
 class TMDBClient {
   httpClient: typeof HttpClient;
@@ -12,15 +13,20 @@ class TMDBClient {
     this.TMDBApiKey = process.env.TMDB_API_KEY || "";
   }
   async getMovieInfos(movieIds: Array<string>) {
-    log(`movieIds ${movieIds}`);
-    const data = [];
-    for await (const movieId of movieIds) {
-      log(`getting movie info for ${movieId}`);
-      const url = this._getIMDBURL(movieId);
-      const movieData = await this.httpClient.get(url, {});
-      data.push(movieData);
-    }
-    return data;
+    // log(`movieIds ${movieIds}`);
+    // const data = [];
+    // for await (const movieId of movieIds) {
+    //   log(`getting movie info for ${movieId}`);
+    //   const url = this._getIMDBURL(movieId);
+    //   const movieData = await this.httpClient.get(url, {});
+    //   data.push(movieData);
+    // }
+    // return data;
+    const result = await Promise.all(
+      movieIds.map((id) => this.httpClient.get(this._getIMDBURL(id), {}))
+    );
+    // const data = result.map((el) => el[0]);
+    return result;
   }
   _getIMDBURL(movieID: string) {
     return (

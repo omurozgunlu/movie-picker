@@ -10,11 +10,15 @@ import {
   theme,
 } from '@chakra-ui/react';
 import IntroPage from './pages/intro/introPage';
-import Nav from './components/navbar';
+import HomePage from './pages/homepage/homePage';
+import { useSelector } from 'react-redux';
 function App() {
+  const pageState = useSelector(state => state.pageState.introPage);
+  console.log(`pageState  ${pageState}`);
   return (
     <ChakraProvider theme={theme}>
-      <IntroPage />
+      {pageState && <IntroPage />}
+      {!pageState && <HomePage />}
     </ChakraProvider>
   );
 }

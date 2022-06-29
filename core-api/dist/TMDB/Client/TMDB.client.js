@@ -8,13 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -30,28 +23,19 @@ class TMDBClient {
         this.TMDBApiKey = process.env.TMDB_API_KEY || "";
     }
     getMovieInfos(movieIds) {
-        var movieIds_1, movieIds_1_1;
-        var e_1, _a;
         return __awaiter(this, void 0, void 0, function* () {
-            log(`movieIds ${movieIds}`);
-            const data = [];
-            try {
-                for (movieIds_1 = __asyncValues(movieIds); movieIds_1_1 = yield movieIds_1.next(), !movieIds_1_1.done;) {
-                    const movieId = movieIds_1_1.value;
-                    log(`getting movie info for ${movieId}`);
-                    const url = this._getIMDBURL(movieId);
-                    const movieData = yield this.httpClient.get(url, {});
-                    data.push(movieData);
-                }
-            }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
-                try {
-                    if (movieIds_1_1 && !movieIds_1_1.done && (_a = movieIds_1.return)) yield _a.call(movieIds_1);
-                }
-                finally { if (e_1) throw e_1.error; }
-            }
-            return data;
+            // log(`movieIds ${movieIds}`);
+            // const data = [];
+            // for await (const movieId of movieIds) {
+            //   log(`getting movie info for ${movieId}`);
+            //   const url = this._getIMDBURL(movieId);
+            //   const movieData = await this.httpClient.get(url, {});
+            //   data.push(movieData);
+            // }
+            // return data;
+            const result = yield Promise.all(movieIds.map((id) => this.httpClient.get(this._getIMDBURL(id), {})));
+            // const data = result.map((el) => el[0]);
+            return result;
         });
     }
     _getIMDBURL(movieID) {
@@ -65,4 +49,4 @@ class TMDBClient {
 }
 exports.default = new TMDBClient();
 // https://api.themoviedb.org/3/find/tt0816692?api_key=xxx&external_source=imdb_id
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVE1EQi5jbGllbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9UTURCL0NsaWVudC9UTURCLmNsaWVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxrR0FBbUU7QUFDbkUseUJBQXVCO0FBQ3ZCLGtEQUEwQjtBQUMxQixNQUFNLEdBQUcsR0FBb0IsSUFBQSxlQUFLLEVBQUMsaUJBQWlCLENBQUMsQ0FBQztBQUN0RCxNQUFNLFVBQVU7SUFJZDtRQUNFLElBQUksQ0FBQyxVQUFVLEdBQUcsMkJBQVUsQ0FBQztRQUM3QixJQUFJLENBQUMsT0FBTyxHQUFHLCtCQUErQixDQUFDO1FBQy9DLElBQUksQ0FBQyxVQUFVLEdBQUcsT0FBTyxDQUFDLEdBQUcsQ0FBQyxZQUFZLElBQUksRUFBRSxDQUFDO0lBQ25ELENBQUM7SUFDSyxhQUFhLENBQUMsUUFBdUI7Ozs7WUFDekMsR0FBRyxDQUFDLFlBQVksUUFBUSxFQUFFLENBQUMsQ0FBQztZQUM1QixNQUFNLElBQUksR0FBRyxFQUFFLENBQUM7O2dCQUNoQixLQUE0QixhQUFBLGNBQUEsUUFBUSxDQUFBO29CQUF6QixNQUFNLE9BQU8scUJBQUEsQ0FBQTtvQkFDdEIsR0FBRyxDQUFDLDBCQUEwQixPQUFPLEVBQUUsQ0FBQyxDQUFDO29CQUN6QyxNQUFNLEdBQUcsR0FBRyxJQUFJLENBQUMsV0FBVyxDQUFDLE9BQU8sQ0FBQyxDQUFDO29CQUN0QyxNQUFNLFNBQVMsR0FBRyxNQUFNLElBQUksQ0FBQyxVQUFVLENBQUMsR0FBRyxDQUFDLEdBQUcsRUFBRSxFQUFFLENBQUMsQ0FBQztvQkFDckQsSUFBSSxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUMsQ0FBQztpQkFDdEI7Ozs7Ozs7OztZQUNELE9BQU8sSUFBSSxDQUFDOztLQUNiO0lBQ0QsV0FBVyxDQUFDLE9BQWU7UUFDekIsT0FBTyxDQUNMLElBQUksQ0FBQyxPQUFPO1lBQ1osVUFBVTtZQUNWLE9BQU87WUFDUCxXQUFXO1lBQ1gsSUFBSSxDQUFDLFVBQVU7WUFDZiwwQkFBMEIsQ0FDM0IsQ0FBQztJQUNKLENBQUM7Q0FDRjtBQUNELGtCQUFlLElBQUksVUFBVSxFQUFFLENBQUM7QUFDaEMsa0ZBQWtGIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVE1EQi5jbGllbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9UTURCL0NsaWVudC9UTURCLmNsaWVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7OztBQUFBLGtHQUFtRTtBQUNuRSx5QkFBdUI7QUFDdkIsa0RBQTBCO0FBRTFCLE1BQU0sR0FBRyxHQUFvQixJQUFBLGVBQUssRUFBQyxpQkFBaUIsQ0FBQyxDQUFDO0FBQ3RELE1BQU0sVUFBVTtJQUlkO1FBQ0UsSUFBSSxDQUFDLFVBQVUsR0FBRywyQkFBVSxDQUFDO1FBQzdCLElBQUksQ0FBQyxPQUFPLEdBQUcsK0JBQStCLENBQUM7UUFDL0MsSUFBSSxDQUFDLFVBQVUsR0FBRyxPQUFPLENBQUMsR0FBRyxDQUFDLFlBQVksSUFBSSxFQUFFLENBQUM7SUFDbkQsQ0FBQztJQUNLLGFBQWEsQ0FBQyxRQUF1Qjs7WUFDekMsK0JBQStCO1lBQy9CLG1CQUFtQjtZQUNuQiwwQ0FBMEM7WUFDMUMsOENBQThDO1lBQzlDLDJDQUEyQztZQUMzQywwREFBMEQ7WUFDMUQsMEJBQTBCO1lBQzFCLElBQUk7WUFDSixlQUFlO1lBQ2YsTUFBTSxNQUFNLEdBQUcsTUFBTSxPQUFPLENBQUMsR0FBRyxDQUM5QixRQUFRLENBQUMsR0FBRyxDQUFDLENBQUMsRUFBRSxFQUFFLEVBQUUsQ0FBQyxJQUFJLENBQUMsVUFBVSxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsV0FBVyxDQUFDLEVBQUUsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxDQUFDLENBQ3BFLENBQUM7WUFDRiwwQ0FBMEM7WUFDMUMsT0FBTyxNQUFNLENBQUM7UUFDaEIsQ0FBQztLQUFBO0lBQ0QsV0FBVyxDQUFDLE9BQWU7UUFDekIsT0FBTyxDQUNMLElBQUksQ0FBQyxPQUFPO1lBQ1osVUFBVTtZQUNWLE9BQU87WUFDUCxXQUFXO1lBQ1gsSUFBSSxDQUFDLFVBQVU7WUFDZiwwQkFBMEIsQ0FDM0IsQ0FBQztJQUNKLENBQUM7Q0FDRjtBQUNELGtCQUFlLElBQUksVUFBVSxFQUFFLENBQUM7QUFDaEMsa0ZBQWtGIn0=

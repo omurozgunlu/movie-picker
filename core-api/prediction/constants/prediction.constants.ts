@@ -30,3 +30,4 @@ export const GENRES = {
 };
 
 export const GENRE_SHORT_LIST = [0, 1, 2, 4, 5, 6, 7, 8, 9, 13, 14, 18];
+//Crime, Drama, Comedy, Romance, Family, Documentary, Action, Fantasy, Adventure, Horror, Sci-Fi, Animation

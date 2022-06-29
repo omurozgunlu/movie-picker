@@ -15,6 +15,7 @@ def kmeans():
     result = result.tolist()
     if len(result) == 1:
         result = result[0]
+    print(result)
     return jsonify({'clusterId':result})
 
 if __name__ == '__main__':
